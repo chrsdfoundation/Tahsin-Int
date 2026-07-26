@@ -1,11 +1,20 @@
 {
     "images": {
-        "hero": { "image": "", "alt": "" },
+        "hero": {
+            "image": "",
+            "alt": ""
+        },
         "office": {
             "image": "assets/uploads/paltan_china_town-501d3a.jpg",
             "alt": "Tahsin International office — Paltan China Town East Tower, Naya Paltan, Dhaka"
         },
-        "about-profile": { "image": "", "alt": "" },
-        "ceo-portrait": { "image": "", "alt": "" }
+        "about-profile": {
+            "image": "assets/uploads/vecteezy_electrician-working-on-electrical-panel-wiring-and--6ba304.jpg",
+            "alt": ""
+        },
+        "ceo-portrait": {
+            "image": "assets/uploads/md-motalib-hossain-69acd4.jpg",
+            "alt": ""
+        }
     }
 }
