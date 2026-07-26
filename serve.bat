@@ -29,7 +29,7 @@ echo   Starting PHP server (forms enabled) at %URL%
 echo   Press Ctrl+C to stop.
 echo.
 start "" "%URL%"
-php -S 127.0.0.1:%PORT%
+php -d upload_max_filesize=16M -d post_max_size=20M -d max_file_uploads=20 -S 127.0.0.1:%PORT%
 goto end
 
 :python

@@ -75,3 +75,18 @@ ErrorDocument 404 /404.html
   AddType application/manifest+json .webmanifest
   AddType image/svg+xml .svg
 </IfModule>
+
+# ---------- Upload limits (mod_php hosts only; FPM/CGI use .user.ini) ----------
+# Guarded so PHP-FPM servers (which reject php_value in .htaccess) don't 500.
+<IfModule mod_php.c>
+  php_value upload_max_filesize 16M
+  php_value post_max_size 20M
+</IfModule>
+<IfModule mod_php7.c>
+  php_value upload_max_filesize 16M
+  php_value post_max_size 20M
+</IfModule>
+<IfModule mod_php8.c>
+  php_value upload_max_filesize 16M
+  php_value post_max_size 20M
+</IfModule>

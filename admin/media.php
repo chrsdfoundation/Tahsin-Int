@@ -11,7 +11,27 @@ $allowedMime = [
 
 if (!is_dir(TI_UPLOAD_DIR)) { @mkdir(TI_UPLOAD_DIR, 0755, true); }
 
+function upload_error_message(int $code): string {
+    switch ($code) {
+        case UPLOAD_ERR_INI_SIZE:
+        case UPLOAD_ERR_FORM_SIZE:
+            return 'File is too large. The server limit is ' . ini_get('upload_max_filesize')
+                . '. Raise upload_max_filesize / post_max_size (see the note below) or upload a smaller image.';
+        case UPLOAD_ERR_PARTIAL:   return 'The upload was interrupted — please try again.';
+        case UPLOAD_ERR_NO_TMP_DIR:return 'Server error: no temporary folder is configured for uploads.';
+        case UPLOAD_ERR_CANT_WRITE:return 'Server error: could not write the file to disk (check folder permissions).';
+        case UPLOAD_ERR_EXTENSION: return 'A server extension blocked the upload.';
+        default:                   return 'Upload failed (code ' . $code . ').';
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // If the whole request exceeded post_max_size, PHP empties $_POST and $_FILES.
+    if (empty($_POST) && empty($_FILES) && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+        flash('That file is too large for the server (POST limit ' . ini_get('post_max_size')
+            . '). Raise upload_max_filesize / post_max_size — see the note below.', 'err');
+        header('Location: media.php'); exit;
+    }
     if (!csrf_ok()) { flash('Session expired — please try again.', 'err'); header('Location: media.php'); exit; }
 
     // Delete
@@ -32,9 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$f || $f['error'] === UPLOAD_ERR_NO_FILE) {
         flash('Please choose a file.', 'err');
     } elseif ($f['error'] !== UPLOAD_ERR_OK) {
-        flash('Upload failed (error ' . (int) $f['error'] . ').', 'err');
+        flash(upload_error_message((int) $f['error']), 'err');
     } elseif ($f['size'] > TI_MAX_UPLOAD) {
-        flash('File is too large (max 5 MB).', 'err');
+        flash('File is too large (max ' . (int) (TI_MAX_UPLOAD / 1024 / 1024) . ' MB).', 'err');
     } else {
         $ext = strtolower(pathinfo($f['name'], PATHINFO_EXTENSION));
         $finfo = new finfo(FILEINFO_MIME_TYPE);
@@ -68,12 +88,23 @@ admin_header('Media');
 <h1 class="a-h1">Media library</h1>
 <p class="a-lead">Upload images and PDFs, then copy a file's path into a post's <em>Cover image</em> field or body.</p>
 
+<?php
+$serverLimit = ini_get('upload_max_filesize');
+$appLimitMb  = (int) (TI_MAX_UPLOAD / 1024 / 1024);
+?>
 <form class="a-upload" method="post" enctype="multipart/form-data">
   <?= csrf_field() ?>
   <input type="file" name="file" accept=".jpg,.jpeg,.png,.webp,.gif,.pdf" required>
   <button class="a-btn a-btn--primary" type="submit">Upload</button>
-  <span class="a-hint">Max 5 MB · JPG, PNG, WEBP, GIF, PDF</span>
+  <span class="a-hint">Up to <?= $appLimitMb ?> MB · JPG, PNG, WEBP, GIF, PDF · server limit <?= h($serverLimit) ?></span>
 </form>
+
+<div class="a-note" style="margin-bottom:22px">
+  <strong>File size limits.</strong> This server currently accepts uploads up to <strong><?= h($serverLimit) ?></strong>.
+  If your image is larger, either shrink it, or raise the limit: the included <code>.user.ini</code> sets
+  <code>upload_max_filesize = 16M</code> / <code>post_max_size = 20M</code> (takes effect on most cPanel/PHP-FPM
+  hosts within a few minutes). On cPanel you can also use <em>MultiPHP INI Editor</em> to set these values.
+</div>
 
 <?php if (!$files): ?>
   <div class="a-empty">No files yet. Upload your first image above.</div>

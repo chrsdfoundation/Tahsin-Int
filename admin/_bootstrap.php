@@ -16,7 +16,7 @@ define('TI_DATA_FILE', TI_ROOT . '/assets/data/news.json');
 define('TI_CERT_FILE', TI_ROOT . '/assets/data/certificates.json');
 define('TI_UPLOAD_DIR', TI_ROOT . '/assets/uploads');
 define('TI_UPLOAD_URL', 'assets/uploads/');           // relative to site root (stored in posts)
-define('TI_MAX_UPLOAD', 5 * 1024 * 1024);             // 5 MB
+define('TI_MAX_UPLOAD', 12 * 1024 * 1024);            // 12 MB (also raise PHP limits — see .user.ini)
 define('TI_ALLOWED_EXT', 'jpg,jpeg,png,webp,gif,pdf');
 
 // ---------- Config ----------
