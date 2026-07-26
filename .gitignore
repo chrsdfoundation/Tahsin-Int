@@ -28,6 +28,7 @@ error_log
 .htpasswd
 /tmp/
 
-# Uploads captured by forms (never commit client data)
+# Uploads captured by forms / admin media (never commit client data)
 assets/uploads/*
 !assets/uploads/.gitkeep
+!assets/uploads/.htaccess

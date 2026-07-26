@@ -320,6 +320,77 @@
     });
   }
 
+  /* ---------- News & Blog (reads admin-published assets/data/news.json) ---------- */
+  function news() {
+    var root = qs('[data-news]');
+    if (!root) return;
+    var base = document.documentElement.getAttribute('data-assets-base') || './';
+    var listEl = qs('[data-news-list]', root);
+    var articleEl = qs('[data-news-article]', root);
+    var loadingEl = qs('[data-news-loading]', root);
+    var emptyEl = qs('[data-news-empty]', root);
+    var esc = function (s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    };
+    var fmtDate = function (d) {
+      if (!d) return '';
+      var t = new Date(d);
+      if (isNaN(t)) return esc(d);
+      return t.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+    };
+    var getParam = function (k) {
+      var m = new RegExp('[?&]' + k + '=([^&]+)').exec(location.search);
+      return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : null;
+    };
+    var show = function (el) { if (el) el.hidden = false; };
+    var hide = function (el) { if (el) el.hidden = true; };
+
+    fetch(base + 'assets/data/news.json', { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : { posts: [] }; })
+      .then(function (data) {
+        hide(loadingEl);
+        var posts = ((data && data.posts) || []).filter(function (p) { return p && p.published !== false; });
+        posts.sort(function (a, b) { return String(b.date || '').localeCompare(String(a.date || '')); });
+        var slug = getParam('post');
+
+        if (slug) {
+          var post = posts.filter(function (p) { return p.slug === slug; })[0];
+          if (!post) { renderList(posts); return; }
+          document.title = post.title + ' — News · Tahsin International';
+          var cover = post.cover ? '<img src="' + base + esc(post.cover) + '" alt="' + esc(post.title) + '" style="width:100%;border-radius:12px;margin:0 0 24px" loading="lazy">' : '';
+          articleEl.innerHTML =
+            '<a class="link-more" href="' + base + 'news.html" style="margin-bottom:20px">‹ All posts</a>' +
+            '<span class="eyebrow" style="margin-top:8px">' + fmtDate(post.date) + (post.author ? ' · ' + esc(post.author) : '') + '</span>' +
+            '<h1 class="h2" style="font-size:clamp(1.75rem,4vw,2.4rem);margin:0 0 20px">' + esc(post.title) + '</h1>' +
+            cover +
+            '<div class="news-body">' + (post.body || '') + '</div>';
+          show(articleEl);
+          return;
+        }
+        renderList(posts);
+
+        function renderList(list) {
+          if (!list.length) { show(emptyEl); return; }
+          listEl.innerHTML = list.map(function (p) {
+            var cover = p.cover
+              ? '<img src="' + base + esc(p.cover) + '" alt="' + esc(p.title) + '" style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:10px" loading="lazy">'
+              : '<div class="photo-slot ratio-16-10" style="border-radius:10px;padding:16px"><span class="photo-slot__desc" style="font-size:13px">No cover image</span></div>';
+            return '<a class="card" href="' + base + 'news.html?post=' + encodeURIComponent(p.slug) + '">' +
+              cover +
+              '<span class="slide__meta" style="margin-top:12px">' + fmtDate(p.date) + '</span>' +
+              '<h3 class="card__title" style="font-size:1.125rem">' + esc(p.title) + '</h3>' +
+              '<p class="card__body" style="font-size:14.5px">' + esc(p.excerpt || '') + '</p>' +
+              '<span class="card__more">Read more<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>' +
+              '</a>';
+          }).join('');
+          show(listEl);
+        }
+      })
+      .catch(function () { hide(loadingEl); show(emptyEl); });
+  }
+
   /* ---------- i18n scaffolding (EN active; বাংলা disabled until copy arrives) ---------- */
   function i18n() {
     var buttons = qsa('[data-lang]');
@@ -364,6 +435,7 @@
     filterChips();
     multiStep();
     formHandler();
+    news();
     i18n();
   }
 

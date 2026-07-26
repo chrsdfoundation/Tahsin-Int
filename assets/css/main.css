@@ -498,6 +498,16 @@ a.card:hover .card__icon { stroke: var(--orange); }
 .pullquote cite { display: block; margin-top: 16px; font-family: var(--font-body); font-style: normal; font-size: 15px; font-weight: 600; color: var(--slate); }
 .pullquote cite span { display: block; font-weight: 400; color: var(--muted); font-size: 14px; margin-top: 2px; }
 
+/* ---------- News article body ---------- */
+.news-body { font-size: 16px; line-height: 1.7; color: var(--slate); }
+.news-body > * + * { margin-top: 16px; }
+.news-body img { max-width: 100%; height: auto; border-radius: 10px; margin: 8px 0; }
+.news-body h2 { font-family: var(--font-display); font-weight: 600; font-size: 1.375rem; color: var(--navy); margin-top: 28px; }
+.news-body h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.0625rem; color: var(--ink); margin-top: 20px; }
+.news-body ul, .news-body ol { padding-left: 22px; }
+.news-body a { color: var(--navy); text-decoration: underline; }
+.news-body blockquote { border-left: 3px solid var(--orange); padding-left: 18px; margin: 0; color: var(--slate); font-style: italic; }
+
 /* ---------- Prose (legal / articles) ---------- */
 .prose { max-width: 760px; }
 .prose h2 { font-family: var(--font-display); font-weight: 600; font-size: 1.375rem; color: var(--navy); margin: 36px 0 12px; }

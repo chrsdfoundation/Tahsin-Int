@@ -70,7 +70,7 @@
     <nav class="nav" aria-label="Primary">
       <a class="nav__link" href="index.html" data-i18n="nav.home">Home</a>
       <div class="nav__item" data-navitem>
-        <a class="nav__link" href="about.html" aria-current="page"><span data-i18n="nav.about">About Us</span>
+        <a class="nav__link" href="about.html"><span data-i18n="nav.about">About Us</span>
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
         </a>
         <div class="nav__panel">
@@ -90,7 +90,7 @@
           <a href="services/logistics.html">Logistics &amp; Supply Chain</a>
           <a href="services/manpower.html">Manpower &amp; HR</a>
           <a href="services/travel-visa.html">Travel &amp; Visa</a>
-          <a href="services/investment.html">Investment &amp; Joint Ventures</a>
+          <a href="investment.html">Investment &amp; Joint Ventures</a>
         </div>
       </div>
       <div class="nav__item" data-navitem>
@@ -104,7 +104,7 @@
         </div>
       </div>
       <a class="nav__link" href="projects.html" data-i18n="nav.projects">Projects</a>
-      <a class="nav__link" href="investment.html" data-i18n="nav.investment">Investment</a>
+      <a class="nav__link" href="news.html" aria-current="page" data-i18n="nav.news">News</a>
       <a class="nav__link" href="contact.html" data-i18n="nav.contact">Contact</a>
     </nav>
 
@@ -136,7 +136,7 @@
     <a class="drawer__link" href="products.html">Products</a>
     <a class="drawer__link" href="rfq.html">Request a Quotation</a>
     <a class="drawer__link" href="projects.html">Projects</a>
-    <a class="drawer__link" href="investment.html">Investment</a>
+    <a class="drawer__link" href="news.html">News &amp; Blog</a>
     <a class="drawer__link" href="certificates.html">Certificates &amp; Licenses</a>
     <a class="drawer__link" href="downloads.html">Downloads</a>
     <a class="drawer__link" href="career.html">Career</a>
@@ -154,18 +154,39 @@
       <nav class="crumbs" aria-label="Breadcrumb" data-reveal><a href="index.html">Home</a> <span aria-hidden="true">›</span> <span>News</span></nav>
       <span class="eyebrow" style="color:var(--orange);margin-top:6px" data-reveal>News &amp; Blog</span>
       <h1 class="subhero__title" data-reveal>Updates from Tahsin International</h1>
-      <p class="subhero__sub" data-reveal>Company news, tenders and sector notes will be published here.</p>
+      <p class="subhero__sub" data-reveal>Company news, tenders and sector notes, published by our team.</p>
     </div>
   </section>
 
   <section class="section section--white">
-    <div class="section__inner">
-      <div class="empty-state">
+    <div class="section__inner" data-news>
+      <!-- Loading state (replaced by JS) -->
+      <div data-news-loading class="empty-state">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/></svg>
+        <h3>Loading articles…</h3>
+        <p>Fetching the latest updates.</p>
+      </div>
+
+      <!-- Article list (JS-rendered) -->
+      <div data-news-list class="grid grid--cards" hidden></div>
+
+      <!-- Single article (JS-rendered) -->
+      <article data-news-article class="prose" style="margin:0 auto" hidden></article>
+
+      <!-- Empty state (JS-toggled) -->
+      <div data-news-empty class="empty-state" hidden>
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/></svg>
         <h3>No articles yet</h3>
-        <p>We are preparing our first updates. In the meantime, follow us or get in touch for company news.</p>
+        <p>We are preparing our first updates. In the meantime, get in touch for company news.</p>
         <a class="btn btn--navy" href="contact.html">Contact us<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
+
+      <noscript>
+        <div class="empty-state">
+          <h3>Enable JavaScript to read our latest posts</h3>
+          <p>Our news feed loads dynamically. You can also <a href="contact.html">contact us</a> for updates.</p>
+        </div>
+      </noscript>
     </div>
   </section>
 

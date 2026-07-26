@@ -1,0 +1,7 @@
+# Hardening for the uploads directory — never execute uploaded files.
+Options -Indexes -ExecCGI
+RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .phps .pl .py .cgi
+RemoveType .php .phtml .php3 .php4 .php5 .php7 .phps
+<FilesMatch "(?i)\.(php[0-9]?|phtml|phps|pl|py|cgi|asp|aspx|sh|htaccess)$">
+  Require all denied
+</FilesMatch>

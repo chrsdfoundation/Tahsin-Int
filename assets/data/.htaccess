@@ -1,0 +1,2 @@
+# JSON data is read by the site; just prevent directory listing.
+Options -Indexes
