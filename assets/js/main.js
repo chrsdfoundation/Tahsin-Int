@@ -140,6 +140,38 @@
     lb.addEventListener('click', function (e) { if (e.target === lb) setOpen(false); });
   }
 
+  /* ---------- Site photos (admin-managed assets/data/site-images.json) ---------- */
+  function siteImages() {
+    var slots = qsa('[data-photo]');
+    if (!slots.length) return;
+    var base = document.documentElement.getAttribute('data-assets-base') || './';
+    fetch(base + 'assets/data/site-images.json', { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : { images: {} }; })
+      .then(function (data) {
+        var imgs = (data && data.images) || {};
+        slots.forEach(function (slot) {
+          var entry = imgs[slot.getAttribute('data-photo')];
+          if (!entry || !entry.image) return;
+          var src = base + entry.image;
+          var alt = entry.alt || 'Tahsin International';
+          if (slot.classList.contains('hero__bg')) {
+            // keep text legible: dark brand gradient over the photo
+            slot.style.backgroundImage =
+              'linear-gradient(115deg, rgba(0,0,139,.82) 0%, rgba(0,0,102,.86) 55%, rgba(18,18,110,.86) 100%), url("' + src + '")';
+            slot.style.backgroundSize = 'cover';
+            slot.style.backgroundPosition = 'center';
+          } else {
+            slot.classList.add('has-img');
+            var img = document.createElement('img');
+            img.src = src; img.alt = alt; img.loading = 'lazy';
+            slot.innerHTML = '';
+            slot.appendChild(img);
+          }
+        });
+      })
+      .catch(function () {});
+  }
+
   /* ---------- Certificate scans (admin-managed assets/data/certificates.json) ---------- */
   function certificates() {
     var tiles = qsa('[data-cert-id]');
@@ -458,6 +490,7 @@
     carousel();
     lightbox();
     certificates();
+    siteImages();
     globalEscape();
     lazyMap();
     scrollReveal();

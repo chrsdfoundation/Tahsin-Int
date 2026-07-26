@@ -362,6 +362,9 @@ a.card:hover .card__icon { stroke: var(--orange); }
 .photo-slot svg { stroke: var(--slate-icon); }
 .photo-slot__label { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--slate-icon); }
 .photo-slot__desc { font-size: 14.5px; line-height: 1.55; color: var(--muted); max-width: 300px; }
+/* When an admin photo is assigned, the slot becomes the image itself */
+.photo-slot.has-img { border: none; padding: 0; background: none; overflow: hidden; }
+.photo-slot.has-img img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--r-16); display: block; }
 .ratio-4-3 { aspect-ratio: 4 / 3; }
 .ratio-16-10 { aspect-ratio: 16 / 10; }
 .ratio-3-4 { aspect-ratio: 3 / 4; }

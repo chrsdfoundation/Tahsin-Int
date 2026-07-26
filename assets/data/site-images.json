@@ -1,0 +1,11 @@
+{
+    "images": {
+        "hero": { "image": "", "alt": "" },
+        "office": {
+            "image": "assets/uploads/paltan_china_town-501d3a.jpg",
+            "alt": "Tahsin International office — Paltan China Town East Tower, Naya Paltan, Dhaka"
+        },
+        "about-profile": { "image": "", "alt": "" },
+        "ceo-portrait": { "image": "", "alt": "" }
+    }
+}
