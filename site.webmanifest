@@ -1,0 +1,15 @@
+{
+  "name": "Tahsin International",
+  "short_name": "Tahsin Int",
+  "description": "Export, Import & Government Supplier — First Class Contractor, Dhaka, Bangladesh.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#00008B",
+  "theme_color": "#00008B",
+  "icons": [
+    { "src": "./assets/logos/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./assets/logos/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./assets/logos/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

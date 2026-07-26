@@ -1,0 +1,33 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+._*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.sublime-*
+
+# Dependencies / build
+node_modules/
+dist/
+.cache/
+*.log
+npm-debug.log*
+
+# Environment & secrets
+.env
+.env.*
+assets/php/config.local.php
+
+# cPanel / server artefacts
+cgi-bin/
+error_log
+.htpasswd
+/tmp/
+
+# Uploads captured by forms (never commit client data)
+assets/uploads/*
+!assets/uploads/.gitkeep
