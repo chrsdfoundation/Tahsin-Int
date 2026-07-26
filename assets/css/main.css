@@ -418,6 +418,11 @@ a.card:hover .card__icon { stroke: var(--orange); }
 .cert-tile:hover { border-color: var(--orange); background: var(--surface); }
 .cert-tile__name { font-size: 13px; font-weight: 600; color: var(--slate); line-height: 1.4; }
 .cert-tile__hint { font-size: 11.5px; color: var(--slate-icon); line-height: 1.4; }
+/* When a scan has been assigned, the tile becomes an image thumbnail */
+.cert-tile.has-img { padding: 0; border-style: solid; border-color: var(--border); overflow: hidden; background: #fff; }
+.cert-tile.has-img > :not(img) { display: none; }
+.cert-tile.has-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cert-tile.has-img:hover { border-color: var(--orange); }
 
 /* ---------- Partner / logo wall ---------- */
 .logo-wall { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
@@ -589,9 +594,10 @@ a.card:hover .card__icon { stroke: var(--orange); }
 /* ---------- Lightbox ---------- */
 .lightbox { position: fixed; inset: 0; z-index: 180; background: rgba(15, 23, 42, .86); align-items: center; justify-content: center; padding: 24px; display: flex; }
 .lightbox[hidden] { display: none; }
-.lightbox__card { background: #fff; border-radius: var(--r-16); max-width: 560px; width: 100%; padding: 32px; text-align: center; position: relative; }
+.lightbox__card { background: #fff; border-radius: var(--r-16); max-width: 680px; width: 100%; padding: 32px; text-align: center; position: relative; }
 .lightbox__close { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-8); color: var(--slate); }
-.lightbox__card > svg { margin: 0 auto 14px; stroke: var(--slate-icon); }
+.lightbox__msg svg { margin: 0 auto 14px; stroke: var(--slate-icon); }
+.lightbox__img { display: block; max-width: 100%; max-height: 72vh; margin: 4px auto 0; border-radius: 10px; }
 .lightbox__title { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; color: var(--navy); margin-bottom: 10px; }
 .lightbox__card p { font-size: 15px; line-height: 1.6; color: var(--muted); }
 .lightbox__card code { font-family: var(--font-mono); font-size: 13.5px; color: var(--slate); }

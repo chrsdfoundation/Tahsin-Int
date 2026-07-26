@@ -13,6 +13,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
 // ---------- Paths ----------
 define('TI_ROOT', dirname(__DIR__));
 define('TI_DATA_FILE', TI_ROOT . '/assets/data/news.json');
+define('TI_CERT_FILE', TI_ROOT . '/assets/data/certificates.json');
 define('TI_UPLOAD_DIR', TI_ROOT . '/assets/uploads');
 define('TI_UPLOAD_URL', 'assets/uploads/');           // relative to site root (stored in posts)
 define('TI_MAX_UPLOAD', 5 * 1024 * 1024);             // 5 MB
@@ -117,6 +118,30 @@ function find_post(array $posts, string $slug): ?array {
     return null;
 }
 
+/* Certificate scans (id => ['image'=>..., 'published'=>bool]) */
+function cert_slots(): array {
+    return [
+        'electrical'      => 'Electrical Contractor Licence',
+        'irc'             => 'Import Registration Certificate (IRC)',
+        'trade-licence'   => 'Trade Licence',
+        'vat-bin'         => 'VAT Registration (BIN)',
+        'tin'             => 'TIN Certificate',
+        'dcci'            => 'DCCI Membership',
+        'bgba'            => 'BGBA Membership',
+        'company-profile' => 'Company Profile',
+    ];
+}
+function load_certs(): array {
+    if (!is_file(TI_CERT_FILE)) return [];
+    $d = json_decode((string) file_get_contents(TI_CERT_FILE), true);
+    return is_array($d['certificates'] ?? null) ? $d['certificates'] : [];
+}
+function save_certs(array $certs): bool {
+    if (!is_dir(dirname(TI_CERT_FILE))) { @mkdir(dirname(TI_CERT_FILE), 0755, true); }
+    $json = json_encode(['certificates' => $certs], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    return file_put_contents(TI_CERT_FILE, $json, LOCK_EX) !== false;
+}
+
 /* Very small HTML sanitiser for post bodies (defence-in-depth even though admin is trusted). */
 function clean_body(string $html): string {
     // strip script/style/iframe/on* handlers
@@ -139,7 +164,7 @@ function admin_header(string $title): void {
     if (is_logged_in()) {
         echo '<header class="a-top"><a class="a-brand" href="index.php"><span>Tahsin</span> Admin</a>';
         echo '<nav class="a-nav">';
-        echo '<a href="index.php">Dashboard</a><a href="posts.php">News</a><a href="media.php">Media</a>';
+        echo '<a href="index.php">Dashboard</a><a href="posts.php">News</a><a href="certificates.php">Certificates</a><a href="media.php">Media</a>';
         echo '<a class="a-out" href="logout.php">Log out' . ($u ? ' (' . h($u) . ')' : '') . '</a>';
         echo '</nav></header>';
     }

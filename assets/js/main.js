@@ -103,19 +103,26 @@
     });
   }
 
-  /* ---------- Certificate lightbox ---------- */
+  /* ---------- Certificate lightbox (image-aware) ---------- */
   var lightboxApi = { close: function () {} };
   function lightbox() {
     var lb = qs('[data-lightbox]');
     if (!lb) return;
+    var base = document.documentElement.getAttribute('data-assets-base') || './';
     var title = qs('[data-lightbox-title]', lb);
+    var imgEl = qs('[data-lightbox-img]', lb);
+    var msgEl = qs('[data-lightbox-msg]', lb);
     var lastFocused = null;
-    var setOpen = function (openIt, label) {
+    var setOpen = function (openIt, label, img) {
       if (openIt) {
         lastFocused = document.activeElement;
         lb.hidden = false;
         document.body.style.overflow = 'hidden';
         if (title && label) title.textContent = label;
+        if (imgEl && msgEl) {
+          if (img) { imgEl.src = base + img; imgEl.alt = label || 'Certificate'; imgEl.hidden = false; msgEl.hidden = true; }
+          else { imgEl.hidden = true; imgEl.removeAttribute('src'); msgEl.hidden = false; }
+        }
         var closeBtn = qs('[data-close-lightbox]', lb);
         if (closeBtn) closeBtn.focus();
       } else {
@@ -126,11 +133,35 @@
     };
     lightboxApi.close = function () { setOpen(false); };
     qsa('[data-cert]').forEach(function (b) {
-      b.addEventListener('click', function () { setOpen(true, b.getAttribute('data-cert')); });
+      b.addEventListener('click', function () { setOpen(true, b.getAttribute('data-cert'), b.getAttribute('data-cert-img')); });
     });
     var closeBtn = qs('[data-close-lightbox]', lb);
     if (closeBtn) closeBtn.addEventListener('click', function () { setOpen(false); });
     lb.addEventListener('click', function (e) { if (e.target === lb) setOpen(false); });
+  }
+
+  /* ---------- Certificate scans (admin-managed assets/data/certificates.json) ---------- */
+  function certificates() {
+    var tiles = qsa('[data-cert-id]');
+    if (!tiles.length) return;
+    var base = document.documentElement.getAttribute('data-assets-base') || './';
+    fetch(base + 'assets/data/certificates.json', { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : { certificates: {} }; })
+      .then(function (data) {
+        var certs = (data && data.certificates) || {};
+        tiles.forEach(function (tile) {
+          var c = certs[tile.getAttribute('data-cert-id')];
+          if (!c || !c.image || c.published === false) return;
+          tile.setAttribute('data-cert-img', c.image);
+          tile.classList.add('has-img');
+          var img = document.createElement('img');
+          img.src = base + c.image;
+          img.alt = tile.getAttribute('data-cert') || 'Certificate';
+          img.loading = 'lazy';
+          tile.insertBefore(img, tile.firstChild);
+        });
+      })
+      .catch(function () {});
   }
 
   /* ---------- Global Escape (drawer + lightbox) ---------- */
@@ -426,6 +457,7 @@
     mobileDrawer();
     carousel();
     lightbox();
+    certificates();
     globalEscape();
     lazyMap();
     scrollReveal();

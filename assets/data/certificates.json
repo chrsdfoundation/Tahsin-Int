@@ -1,0 +1,12 @@
+{
+    "certificates": {
+        "electrical": { "image": "", "published": true },
+        "irc": { "image": "", "published": true },
+        "trade-licence": { "image": "assets/uploads/trade-licence-f01b20.jpg", "published": true },
+        "vat-bin": { "image": "", "published": true },
+        "tin": { "image": "", "published": true },
+        "dcci": { "image": "", "published": true },
+        "bgba": { "image": "", "published": true },
+        "company-profile": { "image": "", "published": true }
+    }
+}
