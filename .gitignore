@@ -20,6 +20,7 @@ npm-debug.log*
 # Environment & secrets
 .env
 .env.*
+assets/php/config.php
 assets/php/config.local.php
 
 # cPanel / server artefacts
