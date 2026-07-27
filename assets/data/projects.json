@@ -1,13 +1,13 @@
 {
     "projects": [
         {
-            "slug": "government-electrical-installation",
+            "slug": "government-electrical-installation-project",
             "title": "Government electrical installation project",
             "status": "completed",
             "client": "",
-            "year": "",
+            "year": "2024-2025",
             "description": "Awaiting project record — supply client, scope and contract year to publish.",
-            "image": "",
+            "image": "assets/uploads/untitled-5f4cfb.jpg",
             "published": true
         },
         {
@@ -17,7 +17,7 @@
             "client": "",
             "year": "",
             "description": "Awaiting project record — supply client, scope and contract year to publish.",
-            "image": "",
+            "image": "assets/uploads/dh3x4ol-eef1d6.png",
             "published": true
         },
         {
@@ -27,7 +27,7 @@
             "client": "",
             "year": "",
             "description": "Awaiting project record — supply client, scope and contract year to publish.",
-            "image": "",
+            "image": "assets/uploads/manpower-0338da.jpg",
             "published": true
         }
     ]
