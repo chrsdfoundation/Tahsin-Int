@@ -8,18 +8,18 @@
             "published": true
         },
         {
+            "slug": "bgba-bangladesh-grocery-business-association",
             "acronym": "BGBA",
             "name": "Bangladesh Grocery Business Association",
-            "logo": "",
-            "published": true,
-            "slug": "bgba-bangladesh-grocery-business-association"
+            "logo": "assets/uploads/742129788_1690576629125947_3865895078480004091_n-d8807c.jpg",
+            "published": true
         },
         {
+            "slug": "fbcci-federation-of-bangladesh-chambers-of-commerce-industry",
             "acronym": "FBCCI",
             "name": "Federation of Bangladesh Chambers of Commerce & Industry",
-            "logo": "",
-            "published": true,
-            "slug": "fbcci-federation-of-bangladesh-chambers-of-commerce-industry"
+            "logo": "assets/uploads/fbccilogo-316bb7.jpg",
+            "published": true
         }
     ]
 }
