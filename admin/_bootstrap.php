@@ -15,6 +15,8 @@ define('TI_ROOT', dirname(__DIR__));
 define('TI_DATA_FILE', TI_ROOT . '/assets/data/news.json');
 define('TI_CERT_FILE', TI_ROOT . '/assets/data/certificates.json');
 define('TI_SITEIMG_FILE', TI_ROOT . '/assets/data/site-images.json');
+define('TI_PRODUCTS_FILE', TI_ROOT . '/assets/data/products.json');
+define('TI_PROJECTS_FILE', TI_ROOT . '/assets/data/projects.json');
 define('TI_UPLOAD_DIR', TI_ROOT . '/assets/uploads');
 define('TI_UPLOAD_URL', 'assets/uploads/');           // relative to site root (stored in posts)
 define('TI_MAX_UPLOAD', 12 * 1024 * 1024);            // 12 MB (also raise PHP limits — see .user.ini)
@@ -173,6 +175,72 @@ function clean_body(string $html): string {
     return $html;
 }
 
+/* ---------- Generic list store (products, projects) ---------- */
+function load_list(string $file, string $key): array {
+    if (!is_file($file)) return [];
+    $d = json_decode((string) file_get_contents($file), true);
+    return is_array($d[$key] ?? null) ? $d[$key] : [];
+}
+function save_list(string $file, string $key, array $items): bool {
+    if (!is_dir(dirname($file))) { @mkdir(dirname($file), 0755, true); }
+    $json = json_encode([$key => array_values($items)], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    return file_put_contents($file, $json, LOCK_EX) !== false;
+}
+function find_by_slug(array $items, string $slug): ?array {
+    foreach ($items as $it) { if (($it['slug'] ?? '') === $slug) return $it; }
+    return null;
+}
+
+/* ---------- File uploads (shared by media.php + media-upload.php) ---------- */
+function upload_error_message(int $code): string {
+    switch ($code) {
+        case UPLOAD_ERR_INI_SIZE:
+        case UPLOAD_ERR_FORM_SIZE:
+            return 'File is too large. The server limit is ' . ini_get('upload_max_filesize')
+                . '. Raise upload_max_filesize / post_max_size, or upload a smaller image.';
+        case UPLOAD_ERR_PARTIAL:    return 'The upload was interrupted — please try again.';
+        case UPLOAD_ERR_NO_TMP_DIR: return 'Server error: no temporary folder is configured for uploads.';
+        case UPLOAD_ERR_CANT_WRITE: return 'Server error: could not write the file to disk (check permissions).';
+        case UPLOAD_ERR_EXTENSION:  return 'A server extension blocked the upload.';
+        default:                    return 'Upload failed (code ' . $code . ').';
+    }
+}
+function allowed_upload_mimes(): array {
+    return ['image/jpeg' => 'jpg', 'image/pjpeg' => 'jpg', 'image/png' => 'png',
+            'image/webp' => 'webp', 'image/gif' => 'gif', 'application/pdf' => 'pdf'];
+}
+/** Validate + store one uploaded file. Returns ['ok'=>bool,'path'=>site-relative,'name'=>..,'error'=>..]. */
+function store_upload($f): array {
+    if (!is_array($f) || ($f['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+        return ['ok' => false, 'error' => 'Please choose a file.'];
+    }
+    if ($f['error'] !== UPLOAD_ERR_OK) return ['ok' => false, 'error' => upload_error_message((int) $f['error'])];
+    if ($f['size'] > TI_MAX_UPLOAD)   return ['ok' => false, 'error' => 'File is too large (max ' . (int) (TI_MAX_UPLOAD / 1048576) . ' MB).'];
+    $mimes = allowed_upload_mimes();
+    $finfo = new finfo(FILEINFO_MIME_TYPE);
+    $mime  = (string) $finfo->file($f['tmp_name']);
+    if (!isset($mimes[$mime])) return ['ok' => false, 'error' => 'Only JPG, PNG, WEBP, GIF or PDF files are allowed.'];
+    $want = $mimes[$mime];
+    $ext  = strtolower(pathinfo($f['name'], PATHINFO_EXTENSION));
+    if ($want !== ($ext === 'jpeg' ? 'jpg' : $ext)) return ['ok' => false, 'error' => 'File content does not match its extension.'];
+    $base = strtolower(pathinfo($f['name'], PATHINFO_FILENAME));
+    $base = preg_replace('/[^a-z0-9._-]+/', '-', $base);
+    $base = substr(trim((string) $base, '-.') ?: 'file', 0, 60);
+    if (!is_dir(TI_UPLOAD_DIR)) { @mkdir(TI_UPLOAD_DIR, 0755, true); }
+    $final = $base . '-' . bin2hex(random_bytes(3)) . '.' . $want;
+    if (!move_uploaded_file($f['tmp_name'], TI_UPLOAD_DIR . '/' . $final)) {
+        return ['ok' => false, 'error' => 'Could not save the file.'];
+    }
+    @chmod(TI_UPLOAD_DIR . '/' . $final, 0644);
+    return ['ok' => true, 'path' => TI_UPLOAD_URL . $final, 'name' => $final];
+}
+/** Normalise a site-relative asset path from user input; '' if invalid. */
+function clean_asset_path(string $p): string {
+    $p = ltrim(trim($p), '/');
+    $p = preg_replace('#^\.\./#', '', $p);
+    return ($p === '' || preg_match('#^assets/[A-Za-z0-9._/-]+$#', $p)) ? $p : '';
+}
+
 /* ---------- HTML chrome ---------- */
 function admin_header(string $title): void {
     $u = is_logged_in() ? (string) ($_SESSION['ti_admin'] ?? '') : '';
@@ -181,11 +249,16 @@ function admin_header(string $title): void {
     echo '<meta name="robots" content="noindex, nofollow">';
     echo '<title>' . h($title) . ' · Tahsin Admin</title>';
     echo '<link rel="icon" href="../assets/logos/favicon.svg" type="image/svg+xml">';
-    echo '<link rel="stylesheet" href="admin.css"></head><body>';
+    echo '<link rel="stylesheet" href="admin.css">';
+    if (is_logged_in()) {
+        echo '<meta name="ti-csrf" content="' . h(csrf_token()) . '">';
+        echo '<script src="editor.js" defer></script>';
+    }
+    echo '</head><body>';
     if (is_logged_in()) {
         echo '<header class="a-top"><a class="a-brand" href="index.php"><span>Tahsin</span> Admin</a>';
         echo '<nav class="a-nav">';
-        echo '<a href="index.php">Dashboard</a><a href="posts.php">News</a><a href="certificates.php">Certificates</a><a href="photos.php">Photos</a><a href="media.php">Media</a>';
+        echo '<a href="index.php">Dashboard</a><a href="posts.php">News</a><a href="products.php">Products</a><a href="projects.php">Projects</a><a href="certificates.php">Certificates</a><a href="photos.php">Photos</a><a href="media.php">Media</a>';
         echo '<a class="a-out" href="logout.php">Log out' . ($u ? ' (' . h($u) . ')' : '') . '</a>';
         echo '</nav></header>';
     }

@@ -1,0 +1,52 @@
+{
+    "products": [
+        {
+            "slug": "grocery-essential-commodities",
+            "title": "Grocery & Essential Commodities",
+            "category": "grocery",
+            "description": "High-quality food products and grocery essentials — supplied as an active member of the Bangladesh Grocery Business Association.",
+            "image": "",
+            "published": true
+        },
+        {
+            "slug": "packaged-dry-goods",
+            "title": "Packaged & Dry Goods",
+            "category": "grocery",
+            "description": "Bulk staples and packaged essentials for retail, institutional and government buyers.",
+            "image": "",
+            "published": true
+        },
+        {
+            "slug": "industrial-electrical-supplies",
+            "title": "Industrial & Electrical Supplies",
+            "category": "industrial",
+            "description": "Components and materials for extra-high, medium and low-pressure electrical installation works.",
+            "image": "",
+            "published": true
+        },
+        {
+            "slug": "cabling-switchgear-fittings",
+            "title": "Cabling, Switchgear & Fittings",
+            "category": "industrial",
+            "description": "Electrical materials aligned to our Class A/B/C contractor scope.",
+            "image": "",
+            "published": true
+        },
+        {
+            "slug": "government-supplies",
+            "title": "Government Supplies",
+            "category": "government",
+            "description": "A broad range of products tailored to the procurement needs of government departments as a First Class Contractor.",
+            "image": "",
+            "published": true
+        },
+        {
+            "slug": "tender-institutional-supply",
+            "title": "Tender & Institutional Supply",
+            "category": "government",
+            "description": "Bulk supply against government tenders with full compliance documentation.",
+            "image": "",
+            "published": true
+        }
+    ]
+}

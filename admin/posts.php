@@ -83,15 +83,18 @@ if ($action === 'new' || $action === 'edit') {
         <label class="a-field">Author
           <input type="text" name="author" value="<?= h($p['author']) ?>">
         </label>
-        <label class="a-field">Cover image path <span class="a-hint">(from Media)</span>
-          <input type="text" name="cover" value="<?= h($p['cover']) ?>" placeholder="assets/uploads/photo.jpg">
+        <label class="a-field">Cover image <span class="a-hint">(pick or paste a path)</span>
+          <span class="a-pickrow">
+            <input id="post-cover" type="text" name="cover" value="<?= h($p['cover']) ?>" placeholder="assets/uploads/photo.jpg">
+            <button type="button" class="a-btn" data-media-pick="#post-cover">Choose…</button>
+          </span>
         </label>
       </div>
       <label class="a-field">Excerpt <span class="a-hint">(shown in the list)</span>
         <textarea name="excerpt" rows="2"><?= h($p['excerpt']) ?></textarea>
       </label>
-      <label class="a-field">Body <span class="a-hint">(HTML allowed: &lt;p&gt; &lt;h2&gt; &lt;ul&gt; &lt;a&gt; &lt;img&gt; &lt;strong&gt; &lt;blockquote&gt;)</span>
-        <textarea name="body" rows="16" class="a-mono"><?= h($p['body']) ?></textarea>
+      <label class="a-field">Body <span class="a-hint">(rich text — use the toolbar; Image inserts from your media library)</span>
+        <textarea name="body" rows="16" data-richtext><?= h($p['body']) ?></textarea>
       </label>
       <label class="a-check"><input type="checkbox" name="published" <?= ($p['published'] ?? true) ? 'checked' : '' ?>> Published (visible on the site)</label>
       <div class="a-actions">

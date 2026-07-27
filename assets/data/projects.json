@@ -1,0 +1,34 @@
+{
+    "projects": [
+        {
+            "slug": "government-electrical-installation",
+            "title": "Government electrical installation project",
+            "status": "completed",
+            "client": "",
+            "year": "",
+            "description": "Awaiting project record — supply client, scope and contract year to publish.",
+            "image": "",
+            "published": true
+        },
+        {
+            "slug": "bulk-import-customs-clearance",
+            "title": "Bulk import & customs clearance",
+            "status": "completed",
+            "client": "",
+            "year": "",
+            "description": "Awaiting project record — supply client, scope and contract year to publish.",
+            "image": "",
+            "published": true
+        },
+        {
+            "slug": "manpower-deployment-contract",
+            "title": "Manpower deployment contract",
+            "status": "ongoing",
+            "client": "",
+            "year": "",
+            "description": "Awaiting project record — supply client, scope and contract year to publish.",
+            "image": "",
+            "published": true
+        }
+    ]
+}

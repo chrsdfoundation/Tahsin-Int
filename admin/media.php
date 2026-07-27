@@ -2,28 +2,7 @@
 require __DIR__ . '/_bootstrap.php';
 require_login();
 
-$allowed = explode(',', TI_ALLOWED_EXT);
-$allowedMime = [
-    'image/jpeg' => 'jpg', 'image/pjpeg' => 'jpg',
-    'image/png' => 'png', 'image/webp' => 'webp',
-    'image/gif' => 'gif', 'application/pdf' => 'pdf',
-];
-
 if (!is_dir(TI_UPLOAD_DIR)) { @mkdir(TI_UPLOAD_DIR, 0755, true); }
-
-function upload_error_message(int $code): string {
-    switch ($code) {
-        case UPLOAD_ERR_INI_SIZE:
-        case UPLOAD_ERR_FORM_SIZE:
-            return 'File is too large. The server limit is ' . ini_get('upload_max_filesize')
-                . '. Raise upload_max_filesize / post_max_size (see the note below) or upload a smaller image.';
-        case UPLOAD_ERR_PARTIAL:   return 'The upload was interrupted — please try again.';
-        case UPLOAD_ERR_NO_TMP_DIR:return 'Server error: no temporary folder is configured for uploads.';
-        case UPLOAD_ERR_CANT_WRITE:return 'Server error: could not write the file to disk (check folder permissions).';
-        case UPLOAD_ERR_EXTENSION: return 'A server extension blocked the upload.';
-        default:                   return 'Upload failed (code ' . $code . ').';
-    }
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // If the whole request exceeded post_max_size, PHP empties $_POST and $_FILES.
@@ -48,35 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Upload
-    $f = $_FILES['file'] ?? null;
-    if (!$f || $f['error'] === UPLOAD_ERR_NO_FILE) {
-        flash('Please choose a file.', 'err');
-    } elseif ($f['error'] !== UPLOAD_ERR_OK) {
-        flash(upload_error_message((int) $f['error']), 'err');
-    } elseif ($f['size'] > TI_MAX_UPLOAD) {
-        flash('File is too large (max ' . (int) (TI_MAX_UPLOAD / 1024 / 1024) . ' MB).', 'err');
-    } else {
-        $ext = strtolower(pathinfo($f['name'], PATHINFO_EXTENSION));
-        $finfo = new finfo(FILEINFO_MIME_TYPE);
-        $mime = (string) $finfo->file($f['tmp_name']);
-        if (!in_array($ext, $allowed, true) || !isset($allowedMime[$mime])) {
-            flash('Only JPG, PNG, WEBP, GIF or PDF files are allowed.', 'err');
-        } elseif ($allowedMime[$mime] !== ($ext === 'jpeg' ? 'jpg' : $ext)) {
-            flash('File content does not match its extension.', 'err');
-        } else {
-            $base = strtolower(pathinfo($f['name'], PATHINFO_FILENAME));
-            $base = preg_replace('/[^a-z0-9._-]+/', '-', $base);
-            $base = trim((string) $base, '-.') ?: 'file';
-            $base = substr($base, 0, 60);
-            $final = $base . '-' . bin2hex(random_bytes(3)) . '.' . $allowedMime[$mime];
-            if (move_uploaded_file($f['tmp_name'], TI_UPLOAD_DIR . '/' . $final)) {
-                @chmod(TI_UPLOAD_DIR . '/' . $final, 0644);
-                flash('Uploaded: ' . $final);
-            } else {
-                flash('Could not save the file.', 'err');
-            }
-        }
-    }
+    $r = store_upload($_FILES['file'] ?? null);
+    flash($r['ok'] ? ('Uploaded: ' . $r['name']) : $r['error'], $r['ok'] ? 'ok' : 'err');
     header('Location: media.php'); exit;
 }
 

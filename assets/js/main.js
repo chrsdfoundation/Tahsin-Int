@@ -9,6 +9,12 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var qs = function (s, r) { return (r || document).querySelector(s); };
   var qsa = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var escHtml = function (s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  };
+  var assetsBase = function () { return document.documentElement.getAttribute('data-assets-base') || './'; };
 
   /* ---------- Sticky header condense ---------- */
   function stickyHeader() {
@@ -454,6 +460,86 @@
       .catch(function () { hide(loadingEl); show(emptyEl); });
   }
 
+  /* ---------- Products (admin-managed assets/data/products.json) ---------- */
+  function products() {
+    var wrap = qs('[data-products]');
+    if (!wrap) return;
+    var base = assetsBase();
+    var arrow = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+    fetch(base + 'assets/data/products.json', { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : { products: [] }; })
+      .then(function (data) {
+        var list = ((data && data.products) || []).filter(function (p) { return p && p.published !== false; });
+        if (!list.length) { wrap.innerHTML = '<div class="empty-state"><h3>No products yet</h3><p>Products will appear here soon.</p></div>'; return; }
+        wrap.innerHTML = list.map(function (p) {
+          var media = p.image
+            ? '<img src="' + base + escHtml(p.image) + '" alt="' + escHtml(p.title) + '" style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:10px" loading="lazy">'
+            : '<div class="photo-slot ratio-16-10" style="border-radius:10px;padding:16px"><span class="photo-slot__desc" style="font-size:13px">Product image · 16:10</span></div>';
+          return '<article class="card" data-category="' + escHtml(p.category || '') + '">' + media +
+            '<h3 class="card__title" style="font-size:1.05rem;margin-top:14px">' + escHtml(p.title) + '</h3>' +
+            '<p class="card__body" style="font-size:14.5px">' + escHtml(p.description || '') + '</p>' +
+            '<a class="card__more" href="' + base + 'rfq.html">Request quote' + arrow + '</a></article>';
+        }).join('');
+      })
+      .catch(function () { wrap.innerHTML = '<div class="empty-state"><h3>Could not load products</h3></div>'; });
+  }
+
+  /* ---------- Projects (admin-managed assets/data/projects.json) ---------- */
+  function projects() {
+    var panels = qsa('[data-projects-panel]');
+    var carousel = qs('[data-projects-carousel]');
+    if (!panels.length && !carousel) return;
+    var base = assetsBase();
+    var imgIcon = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.5-4.5L7 21"/></svg>';
+    var meta = function (p) { var m = [p.client, p.year].filter(Boolean).join(' · '); return m || 'Client · Year'; };
+
+    fetch(base + 'assets/data/projects.json', { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : { projects: [] }; })
+      .then(function (data) {
+        var all = ((data && data.projects) || []).filter(function (p) { return p && p.published !== false; });
+
+        panels.forEach(function (panel) {
+          var status = panel.getAttribute('data-projects-panel');
+          var list = all.filter(function (p) { return (p.status || 'completed') === status; });
+          if (!list.length) {
+            panel.innerHTML = '<div class="empty-state">' +
+              '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>' +
+              '<h3>No ' + escHtml(status) + ' projects yet</h3><p>Records are published here once available. <a href="' + base + 'contact.html">Contact us</a> to discuss current capacity.</p></div>';
+            return;
+          }
+          panel.innerHTML = '<div class="grid grid--cards">' + list.map(function (p) {
+            var media = p.image
+              ? '<img src="' + base + escHtml(p.image) + '" alt="' + escHtml(p.title) + '" style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:10px" loading="lazy">'
+              : '<div class="photo-slot ratio-16-10" style="border-radius:10px;padding:16px">' + imgIcon + '</div>';
+            return '<article class="card">' + media +
+              '<span class="slide__meta" style="margin-top:12px">' + escHtml(meta(p)) + '</span>' +
+              '<h3 class="card__title" style="font-size:1.125rem">' + escHtml(p.title) + '</h3>' +
+              '<p class="card__body" style="font-size:14.5px">' + escHtml(p.description || '') + '</p></article>';
+          }).join('') + '</div>';
+        });
+
+        if (carousel) {
+          var list = all.slice(0, 8);
+          if (list.length) {
+            var cta = carousel.querySelector('.slide--cta');
+            qsa('.slide:not(.slide--cta)', carousel).forEach(function (s) { s.remove(); });
+            var html = list.map(function (p) {
+              var media = p.image
+                ? '<div class="slide__media" style="padding:0"><img src="' + base + escHtml(p.image) + '" alt="' + escHtml(p.title) + '" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>'
+                : '<div class="slide__media">' + imgIcon + '<span>' + escHtml(p.title) + '</span></div>';
+              return '<article class="slide">' + media +
+                '<div class="slide__body"><span class="slide__meta">' + escHtml(meta(p)) + '</span>' +
+                '<h3 class="slide__title">' + escHtml(p.title) + '</h3>' +
+                '<p class="slide__desc">' + escHtml(p.description || '') + '</p></div></article>';
+            }).join('');
+            if (cta) cta.insertAdjacentHTML('beforebegin', html);
+            else carousel.innerHTML = html;
+          }
+        }
+      })
+      .catch(function () {});
+  }
+
   /* ---------- i18n scaffolding (EN active; বাংলা disabled until copy arrives) ---------- */
   function i18n() {
     var buttons = qsa('[data-lang]');
@@ -501,6 +587,8 @@
     multiStep();
     formHandler();
     news();
+    products();
+    projects();
     i18n();
   }
 
