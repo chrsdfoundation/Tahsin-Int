@@ -1,0 +1,25 @@
+{
+    "items": [
+        {
+            "slug": "dcci-dhaka-chamber-of-commerce-industry",
+            "acronym": "DCCI",
+            "name": "Dhaka Chamber of Commerce & Industry",
+            "logo": "assets/uploads/dcci_logo.svg-2c4544.webp",
+            "published": true
+        },
+        {
+            "acronym": "BGBA",
+            "name": "Bangladesh Grocery Business Association",
+            "logo": "",
+            "published": true,
+            "slug": "bgba-bangladesh-grocery-business-association"
+        },
+        {
+            "acronym": "FBCCI",
+            "name": "Federation of Bangladesh Chambers of Commerce & Industry",
+            "logo": "",
+            "published": true,
+            "slug": "fbcci-federation-of-bangladesh-chambers-of-commerce-industry"
+        }
+    ]
+}

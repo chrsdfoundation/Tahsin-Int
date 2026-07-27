@@ -17,6 +17,7 @@ define('TI_CERT_FILE', TI_ROOT . '/assets/data/certificates.json');
 define('TI_SITEIMG_FILE', TI_ROOT . '/assets/data/site-images.json');
 define('TI_PRODUCTS_FILE', TI_ROOT . '/assets/data/products.json');
 define('TI_PROJECTS_FILE', TI_ROOT . '/assets/data/projects.json');
+define('TI_MEMBERS_FILE', TI_ROOT . '/assets/data/memberships.json');
 define('TI_UPLOAD_DIR', TI_ROOT . '/assets/uploads');
 define('TI_UPLOAD_URL', 'assets/uploads/');           // relative to site root (stored in posts)
 define('TI_MAX_UPLOAD', 12 * 1024 * 1024);            // 12 MB (also raise PHP limits — see .user.ini)
@@ -258,7 +259,7 @@ function admin_header(string $title): void {
     if (is_logged_in()) {
         echo '<header class="a-top"><a class="a-brand" href="index.php"><span>Tahsin</span> Admin</a>';
         echo '<nav class="a-nav">';
-        echo '<a href="index.php">Dashboard</a><a href="posts.php">News</a><a href="products.php">Products</a><a href="projects.php">Projects</a><a href="certificates.php">Certificates</a><a href="photos.php">Photos</a><a href="media.php">Media</a>';
+        echo '<a href="index.php">Dashboard</a><a href="posts.php">News</a><a href="products.php">Products</a><a href="projects.php">Projects</a><a href="memberships.php">Memberships</a><a href="certificates.php">Certificates</a><a href="photos.php">Photos</a><a href="media.php">Media</a>';
         echo '<a class="a-out" href="logout.php">Log out' . ($u ? ' (' . h($u) . ')' : '') . '</a>';
         echo '</nav></header>';
     }

@@ -436,6 +436,7 @@ a.card:hover .card__icon { stroke: var(--orange); }
 .member:hover { box-shadow: var(--shadow-card); border-color: #C7CEDA; }
 .member__mark { color: var(--navy); flex-shrink: 0; }
 .member__badge { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: .06em; color: #fff; background: var(--navy); padding: 6px 14px; border-radius: 8px; }
+.member__logo { max-width: 100%; max-height: 60px; object-fit: contain; }
 .member__name { font-size: 12.5px; line-height: 1.4; color: var(--muted); max-width: 200px; }
 .member--empty { border-style: dashed; border-color: #C7CEDA; }
 .member--empty .member__mark { color: var(--slate-icon); }

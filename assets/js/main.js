@@ -540,6 +540,32 @@
       .catch(function () {});
   }
 
+  /* ---------- Memberships & partners (admin-managed assets/data/memberships.json) ---------- */
+  function memberships() {
+    var wraps = qsa('[data-memberships]');
+    if (!wraps.length) return;
+    var base = assetsBase();
+    var MARK = '<svg class="member__mark" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M4 21V10l8-5 8 5v11M9 21v-6h6v6M6 21v-8M18 21v-8"/></svg>';
+    fetch(base + 'assets/data/memberships.json', { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : { items: [] }; })
+      .then(function (data) {
+        var items = ((data && data.items) || []).filter(function (m) { return m && m.published !== false; });
+        wraps.forEach(function (wrap) {
+          if (!items.length) {
+            wrap.innerHTML = '<div class="member member--empty">' + MARK + '<span class="member__name">Memberships &amp; partners will appear here</span></div>';
+            return;
+          }
+          wrap.innerHTML = items.map(function (m) {
+            var inner = m.logo
+              ? '<img class="member__logo" src="' + base + escHtml(m.logo) + '" alt="' + escHtml(m.name || m.acronym || '') + '" loading="lazy">'
+              : MARK + '<span class="member__badge">' + escHtml(m.acronym || '') + '</span>';
+            return '<div class="member">' + inner + '<span class="member__name">' + escHtml(m.name || '') + '</span></div>';
+          }).join('');
+        });
+      })
+      .catch(function () {});
+  }
+
   /* ---------- i18n scaffolding (EN active; বাংলা disabled until copy arrives) ---------- */
   function i18n() {
     var buttons = qsa('[data-lang]');
@@ -589,6 +615,7 @@
     news();
     products();
     projects();
+    memberships();
     i18n();
   }
 
