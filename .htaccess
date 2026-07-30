@@ -17,9 +17,9 @@ ErrorDocument 404 /404.html
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
   # ---------- Extensionless URLs ----------
-  # /about  ->  /about.html   (only when the .html file exists)
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME}\.html -f
+  # /about  ->  /about.html   and /about/ -> /about.html
+  # /services/ -> /services.html (rewrite before checking if it's a directory)
+  RewriteCond %{REQUEST_FILENAME}.html -f
   RewriteRule ^(.+?)/?$ $1.html [L]
 
   # Optional: strip .html from the visible URL (301 to clean path)
