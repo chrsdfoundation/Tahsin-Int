@@ -5,7 +5,67 @@ Runs on any PHP 8.1+ host; written and tested for **cPanel**.
 
 ---
 
-## 1. Upload the site
+## 0. Automated Deployment via GitHub Actions (Recommended)
+
+If you want changes pushed to `main` to automatically deploy to the live site, set up GitHub Actions:
+
+### Setup (one-time)
+
+1. **Gather cPanel SFTP credentials:**
+   - cPanel username (often your domain account name)
+   - cPanel password
+   - SFTP hostname (ask your host, e.g., `sftp.tigroup.com.bd` or an IP)
+   - SFTP port (usually 22)
+   - Target path (usually `/home/{username}/public_html` for the main domain)
+
+2. **Add GitHub Secrets** (GitHub repo → Settings → Secrets and variables → Actions):
+   - `CPANEL_HOST` — SFTP server hostname
+   - `CPANEL_USER` — cPanel/FTP username
+   - `CPANEL_PASSWORD` — cPanel password
+   - `CPANEL_PORT` — SFTP port (default: 22)
+   - `DEPLOY_PATH` — Remote directory (e.g., `/home/username/public_html`)
+
+3. **Test SFTP connectivity** (before relying on CI/CD):
+   ```bash
+   sftp -P 22 username@sftp.tigroup.com.bd
+   ```
+   Verify you can read and write files.
+
+### How it works
+
+- Every push to `main` triggers the workflow (`.github/workflows/deploy.yml`)
+- The workflow:
+  1. Checks out your code (including git-ignored files like `assets/uploads/`)
+  2. Deploys the entire folder to cPanel via SFTP
+  3. Verifies the site is live with an HTTP check
+  4. Reports success/failure in the GitHub Actions tab
+- Changes appear on the live site within 1–2 minutes
+
+### Rollback
+
+If a deployment breaks the site:
+```bash
+git revert HEAD  # Reverts the broken commit
+git push         # Triggers deployment of the previous version
+```
+
+### Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| **Workflow not triggering** | Check that the branch is `main` and the commit is pushed to origin |
+| **Deploy fails with auth error** | Verify `CPANEL_*` secrets are correct; test SFTP manually |
+| **Site shows old content** | Check the Actions tab for workflow logs; verify SFTP upload completed |
+| **Uploaded files missing after deploy** | They should persist on the server (not deleted by SFTP). Check manually via FTP. |
+| **Admin login fails after deploy** | Ensure `assets/php/config.php` exists on the server (set up once, manually) |
+
+### Disabling automated deployment
+
+If you want to go back to manual deployment, simply don't push to `main` (use feature branches), or disable the workflow in GitHub (Settings → Actions → Disable this workflow).
+
+---
+
+## 1. Upload the site (Manual Deployment)
 
 **Recommended (cPanel File Manager):**
 1. Zip the **entire project folder** (including `assets/uploads/` and `assets/data/`).

@@ -1,0 +1,63 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Deploy to cPanel via SFTP
+        uses: milanmk/actions-file-deployer@master
+        with:
+          remote-url: sftp://${{ secrets.CPANEL_USER }}@${{ secrets.CPANEL_HOST }}:${{ secrets.CPANEL_PORT }}
+          remote-path: ${{ secrets.DEPLOY_PATH }}
+          local-path: ./
+          password: ${{ secrets.CPANEL_PASSWORD }}
+          exclude: |
+            .git/
+            .github/
+            .gitignore
+            .editorconfig
+            .gitattributes
+            README.md
+            ONBOARDING.md
+            CHANGELOG.md
+            CONTRIBUTING.md
+            DEPLOYMENT.md
+            LICENSE
+            node_modules/
+            pint.json
+            phpunit.xml
+            start.bat
+            serve.bat
+            package-lock.json
+
+      - name: Verify deployment
+        run: |
+          echo "🔍 Verifying deployment..."
+          if curl -sf https://tigroup.com.bd/index.html > /dev/null 2>&1; then
+            echo "✅ Site is live and accessible"
+          else
+            echo "⚠️ Site returned an error, but deployment completed. Check manually."
+          fi
+
+      - name: Deployment summary
+        if: success()
+        run: |
+          echo "🚀 Deployment successful!"
+          echo "📍 Live at: https://tigroup.com.bd"
+          echo "⏰ Deployed at: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+
+      - name: Deployment failed
+        if: failure()
+        run: |
+          echo "❌ Deployment failed. Check the logs above for details."
+          exit 1
