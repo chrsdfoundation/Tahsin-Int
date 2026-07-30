@@ -14,13 +14,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Deploy to cPanel via SFTP
+      - name: Deploy to Hostinger via FTP
         uses: milanmk/actions-file-deployer@master
         with:
-          remote-url: sftp://${{ secrets.CPANEL_USER }}@${{ secrets.CPANEL_HOST }}:${{ secrets.CPANEL_PORT }}
-          remote-path: ${{ secrets.DEPLOY_PATH }}
+          remote-url: ftp://${{ secrets.FTP_USER }}@${{ secrets.FTP_HOST }}:${{ secrets.FTP_PORT }}
+          remote-path: ${{ secrets.FTP_PATH }}
           local-path: ./
-          password: ${{ secrets.CPANEL_PASSWORD }}
+          password: ${{ secrets.FTP_PASSWORD }}
           exclude: |
             .git/
             .github/
