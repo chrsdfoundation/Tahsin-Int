@@ -17,13 +17,16 @@ jobs:
       - name: Deploy to Hostinger via FTP
         uses: milanmk/actions-file-deployer@master
         with:
-          remote-url: ftp://${{ secrets.FTP_USER }}@${{ secrets.FTP_HOST }}:${{ secrets.FTP_PORT }}
+          remote-protocol: ftp
+          remote-host: ${{ secrets.FTP_HOST }}
+          remote-port: ${{ secrets.FTP_PORT }}
+          remote-user: ${{ secrets.FTP_USER }}
+          remote-password: ${{ secrets.FTP_PASSWORD }}
           remote-path: ${{ secrets.FTP_PATH }}
           local-path: ./
-          password: ${{ secrets.FTP_PASSWORD }}
-          exclude: |
-            .git/
-            .github/
+          sync-delta-excludes: |
+            .git
+            .github
             .gitignore
             .editorconfig
             .gitattributes
@@ -33,7 +36,7 @@ jobs:
             CONTRIBUTING.md
             DEPLOYMENT.md
             LICENSE
-            node_modules/
+            node_modules
             pint.json
             phpunit.xml
             start.bat
