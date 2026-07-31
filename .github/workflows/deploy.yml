@@ -4,10 +4,14 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 15
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -15,7 +19,9 @@ jobs:
           fetch-depth: 0
 
       - name: Deploy to Hostinger via FTP
-        uses: milanmk/actions-file-deployer@master
+        # Pinned to v1.18 (b204fec) instead of @master to avoid unreviewed
+        # upstream action changes running unexpectedly in production deploys.
+        uses: milanmk/actions-file-deployer@b204fec5b826c391b116c40b789df470a4fb6870 # v1.18
         with:
           remote-protocol: ftp
           remote-host: ${{ secrets.FTP_HOST }}
@@ -23,7 +29,11 @@ jobs:
           remote-user: ${{ secrets.FTP_USER }}
           remote-password: ${{ secrets.FTP_PASSWORD }}
           remote-path: ${{ secrets.FTP_PATH }}
+          # Use the explicit workspace path to avoid empty-path/realpath errors
           local-path: ${{ github.workspace }}
+          # NOTE: still using full sync (kept as-is). Switching to "delta" would
+          # use the excludes list below, delete files removed from the repo,
+          # and speed up deploys - confirm that behavior is desired first.
           sync: full
           sync-delta-excludes: |
             .git
@@ -46,22 +56,23 @@ jobs:
 
       - name: Verify deployment
         run: |
-          echo "🔍 Verifying deployment..."
-          if curl -sf https://tigroup.com.bd/index.html > /dev/null 2>&1; then
-            echo "✅ Site is live and accessible"
+          echo "Verifying deployment..."
+          if curl -sf --max-time 15 https://tigroup.com.bd/index.html > /dev/null 2>&1; then
+            echo "Site is live and accessible"
           else
-            echo "⚠️ Site returned an error, but deployment completed. Check manually."
+            echo "Site verification failed after deployment"
+            exit 1
           fi
 
       - name: Deployment summary
         if: success()
         run: |
-          echo "🚀 Deployment successful!"
-          echo "📍 Live at: https://tigroup.com.bd"
-          echo "⏰ Deployed at: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          echo "Deployment successful!"
+          echo "Live at: https://tigroup.com.bd"
+          echo "Deployed at: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
 
       - name: Deployment failed
         if: failure()
         run: |
-          echo "❌ Deployment failed. Check the logs above for details."
+          echo "Deployment failed. Check the logs above for details."
           exit 1
