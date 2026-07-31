@@ -23,7 +23,8 @@ jobs:
           remote-user: ${{ secrets.FTP_USER }}
           remote-password: ${{ secrets.FTP_PASSWORD }}
           remote-path: ${{ secrets.FTP_PATH }}
-          local-path: ./
+          local-path: ${{ github.workspace }}
+          sync: full
           sync-delta-excludes: |
             .git
             .github
