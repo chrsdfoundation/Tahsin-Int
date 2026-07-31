@@ -380,7 +380,7 @@
             throw new Error((data && data.error) || 'send failed');
           }
         }).catch(function () {
-          if (note) { note.textContent = 'Sorry — that didn’t send. Please email tahsininternationalbd2021@gmail.com or WhatsApp +880 1716 610665.'; note.className = 'form__note form__note--err'; }
+          if (note) { note.textContent = 'Sorry — that didn’t send. Please email info@tigroup.com.bd or WhatsApp +880 1716 610665.'; note.className = 'form__note form__note--err'; }
         }).then(function () {
           if (submitBtn) { submitBtn.disabled = false; submitBtn.removeAttribute('aria-busy'); submitBtn.innerHTML = originalLabel; }
           window.setTimeout(function () { if (note) { note.textContent = defaultNote; note.className = 'form__note'; } }, 8000);

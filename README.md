@@ -147,7 +147,7 @@ php -S localhost:8000
 ## Contact
 
 Suite 17/7 (Lift-16), Paltan China Town East Tower, 67/1, 68, 70, 70/3 Naya Paltan, Dhaka-1000, Bangladesh
-+880 1716 610665 (WhatsApp) · tahsininternationalbd2021@gmail.com
++880 1716 610665 (WhatsApp) · info@tigroup.com.bd
 
 ---
 
