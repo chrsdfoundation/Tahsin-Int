@@ -12,7 +12,7 @@ return [
     // MUST be an address on your own cPanel domain or mail will be rejected as spoofed.
     'from_email' => 'noreply@tahsinint.com',
     'from_name'  => 'Tahsin International Website',
-    'whatsapp'   => '+880 1716 610665',
+    'whatsapp'   => '01714781490',
     'auto_reply' => true,
 
     // ------------------------------------------------------------------
