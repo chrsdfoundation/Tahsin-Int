@@ -259,7 +259,7 @@ function admin_header(string $title): void {
     if (is_logged_in()) {
         echo '<header class="a-top"><a class="a-brand" href="index.php"><span>Tahsin</span> Admin</a>';
         echo '<nav class="a-nav">';
-        echo '<a href="index.php">Dashboard</a><a href="posts.php">News</a><a href="products.php">Products</a><a href="projects.php">Projects</a><a href="memberships.php">Memberships</a><a href="certificates.php">Certificates</a><a href="photos.php">Photos</a><a href="media.php">Media</a><a href="fix-images.php" style="color:#ef4444">⚡ Fix Images</a>';
+        echo '<a href="index.php">Dashboard</a><a href="posts.php">News</a><a href="products.php">Products</a><a href="projects.php">Projects</a><a href="memberships.php">Memberships</a><a href="certificates.php">Certificates</a><a href="photos.php">Photos</a><a href="media.php">Media</a><a href="upload-diagnostics.php" style="color:#06b6d4">🔍 Diagnostics</a><a href="fix-images.php" style="color:#ef4444">⚡ Fix</a>';
         echo '<a class="a-out" href="logout.php">Log out' . ($u ? ' (' . h($u) . ')' : '') . '</a>';
         echo '</nav></header>';
     }
