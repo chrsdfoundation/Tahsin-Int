@@ -2,35 +2,35 @@
     "certificates": {
         "electrical": {
             "image": "",
-            "published": true
+            "published": false
         },
         "irc": {
             "image": "",
-            "published": true
+            "published": false
         },
         "trade-licence": {
             "image": "assets/uploads/trade-licence-f01b20.jpg",
-            "published": true
+            "published": false
         },
         "vat-bin": {
             "image": "assets/uploads/img_20260721_195926-83934f.jpg",
-            "published": true
+            "published": false
         },
         "tin": {
             "image": "",
-            "published": true
+            "published": false
         },
         "dcci": {
             "image": "assets/uploads/dcc-c48d45.png",
-            "published": true
+            "published": false
         },
         "bgba": {
             "image": "",
-            "published": true
+            "published": false
         },
         "company-profile": {
             "image": "",
-            "published": true
+            "published": false
         }
     }
 }

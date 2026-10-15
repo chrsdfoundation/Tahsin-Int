@@ -1,6 +1,56 @@
 {
     "projects": [
         {
+            "slug": "central-air-cooling-system",
+            "title": "central air cooling system",
+            "status": "completed",
+            "client": "centre point Dhaka Bangladesh",
+            "year": "23/24",
+            "description": "central air cooling project Center Point by Dhaka",
+            "image": "assets/uploads/1000364187-c7ce97.webp",
+            "published": true
+        },
+        {
+            "slug": "underground-cabling-project-in-bangladesh-football-stadium-dhaka",
+            "title": "Underground cabling project in Bangladesh football stadium Dhaka.",
+            "status": "completed",
+            "client": "Ministry of sports",
+            "year": "2025",
+            "description": "600 metre underground heavy carvelling project done under Bangladesh National Football stadium Dhaka",
+            "image": "assets/uploads/1000364185-40ac79.jpg",
+            "published": true
+        },
+        {
+            "slug": "vrf-chiller-and-hvac-system-commissioning-and-repair-services-in-global-brand-bangladesh",
+            "title": "vRf Chiller And HVAC system commissioning And Repair & Services in global Brand Bangladesh",
+            "status": "completed",
+            "client": "Global Brand Bangladesh",
+            "year": "2024",
+            "description": "Chiller (Brand-York) & 3 nos. AHU with all complete accessories for HVAC system at Global Brand PLC Head Office, Panthapath, Dhaka.",
+            "image": "assets/uploads/1000364184-11b98b.jpg",
+            "published": true
+        },
+        {
+            "slug": "bir-shrestha-shaheed-shipahi-mustofa-kamal-stadium-kamalapur",
+            "title": "Bir Shrestha Shaheed Shipahi Mustofa Kamal Stadium Kamalapur",
+            "status": "completed",
+            "client": "Ministry of sports",
+            "year": "2026",
+            "description": "renovation and repairing work Bir Shrestha Shaheed Shipahi Mustofa Kamal Stadium Kamalapur",
+            "image": "assets/uploads/1000364182-477b96.jpg",
+            "published": true
+        },
+        {
+            "slug": "work-and-renovation-work-munshiganj-indoor-stadium",
+            "title": "work and renovation work munshiganj Indoor Stadium",
+            "status": "completed",
+            "client": "Ministry of sports",
+            "year": "2026",
+            "description": "repairing and renovation work Munshiganj  district Indoor Stadium",
+            "image": "assets/uploads/1000364174-163f7c.jpg",
+            "published": true
+        },
+        {
             "slug": "government-electrical-installation-project",
             "title": "Government electrical installation project",
             "status": "completed",
@@ -15,7 +65,7 @@
             "title": "Bulk import & customs clearance",
             "status": "completed",
             "client": "",
-            "year": "",
+            "year": "2025/2026",
             "description": "Awaiting project record — supply client, scope and contract year to publish.",
             "image": "assets/uploads/dh3x4ol-eef1d6.png",
             "published": true

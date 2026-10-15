@@ -20,6 +20,13 @@
             "name": "Federation of Bangladesh Chambers of Commerce & Industry",
             "logo": "assets/uploads/fbccilogo-316bb7.jpg",
             "published": true
+        },
+        {
+            "slug": "ncci-ef5a",
+            "acronym": "NCCI",
+            "name": "Noakhali Chamber of Commerce",
+            "logo": "assets/uploads/1000364190-90b9d7.jpg",
+            "published": true
         }
     ]
 }

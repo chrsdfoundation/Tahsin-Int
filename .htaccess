@@ -39,8 +39,9 @@ ErrorDocument 404 /404.html
   ExpiresActive On
   ExpiresDefault                          "access plus 1 week"
   ExpiresByType text/html                 "access plus 0 seconds"
-  ExpiresByType text/css                  "access plus 1 year"
-  ExpiresByType application/javascript    "access plus 1 year"
+  ExpiresByType application/json          "access plus 0 seconds"
+  ExpiresByType text/css                  "access plus 0 seconds"
+  ExpiresByType application/javascript    "access plus 0 seconds"
   ExpiresByType image/svg+xml             "access plus 1 year"
   ExpiresByType image/png                 "access plus 1 year"
   ExpiresByType image/jpeg                "access plus 1 year"
@@ -51,9 +52,17 @@ ErrorDocument 404 /404.html
 </IfModule>
 
 <IfModule mod_headers.c>
-  # Long-cache immutable static assets
-  <FilesMatch "\.(css|js|svg|png|jpe?g|webp|ico|woff2)$">
+  # Long-cache truly static media/fonts (filenames change when content changes)
+  <FilesMatch "\.(svg|png|jpe?g|webp|gif|ico|woff2)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  # CSS/JS must revalidate so site updates reach visitors (use ?v= to force-break old caches)
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+  # Never cache dynamic JSON content edited from the admin panel
+  <FilesMatch "\.json$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
   </FilesMatch>
   # Always revalidate HTML
   <FilesMatch "\.html$">

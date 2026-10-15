@@ -1,6 +1,14 @@
 {
     "products": [
         {
+            "slug": "fresh-fruit-vegitables",
+            "title": "Fresh Fruit & Vegitables",
+            "category": "grocery",
+            "description": "",
+            "image": "assets/uploads/1000341475-6855bc.jpg",
+            "published": true
+        },
+        {
             "slug": "grocery-essential-commodities",
             "title": "Grocery & Essential Commodities",
             "category": "grocery",
@@ -9,11 +17,11 @@
             "published": true
         },
         {
-            "slug": "packaged-dry-goods",
+            "slug": "packaging-and-binding-goods",
             "title": "Packaged & Dry Goods",
             "category": "grocery",
-            "description": "Bulk staples and packaged essentials for retail, institutional and government buyers.",
-            "image": "",
+            "description": "Bulk staples and packaged essentials for retail, institutional and government, non government  buyers .",
+            "image": "assets/uploads/1000341278-430b90.jpg",
             "published": true
         },
         {
@@ -21,7 +29,7 @@
             "title": "Industrial & Electrical Supplies",
             "category": "industrial",
             "description": "Components and materials for extra-high, medium and low-pressure electrical installation works.",
-            "image": "",
+            "image": "assets/uploads/1000364181-f9f711.jpg",
             "published": true
         },
         {
@@ -29,7 +37,7 @@
             "title": "Cabling, Switchgear & Fittings",
             "category": "industrial",
             "description": "Electrical materials aligned to our Class A/B/C contractor scope.",
-            "image": "",
+            "image": "assets/uploads/1000364191-1872e9.jpg",
             "published": true
         },
         {

@@ -151,7 +151,7 @@
     var slots = qsa('[data-photo]');
     if (!slots.length) return;
     var base = document.documentElement.getAttribute('data-assets-base') || './';
-    fetch(base + 'assets/data/site-images.json', { headers: { 'Accept': 'application/json' } })
+    fetch(base + 'assets/data/site-images.json', { headers: { 'Accept': 'application/json' }, cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : { images: {} }; })
       .then(function (data) {
         var imgs = (data && data.images) || {};
@@ -183,7 +183,7 @@
     var tiles = qsa('[data-cert-id]');
     if (!tiles.length) return;
     var base = document.documentElement.getAttribute('data-assets-base') || './';
-    fetch(base + 'assets/data/certificates.json', { headers: { 'Accept': 'application/json' } })
+    fetch(base + 'assets/data/certificates.json', { headers: { 'Accept': 'application/json' }, cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : { certificates: {} }; })
       .then(function (data) {
         var certs = (data && data.certificates) || {};
@@ -416,7 +416,7 @@
     var show = function (el) { if (el) el.hidden = false; };
     var hide = function (el) { if (el) el.hidden = true; };
 
-    fetch(base + 'assets/data/news.json', { headers: { 'Accept': 'application/json' } })
+    fetch(base + 'assets/data/news.json', { headers: { 'Accept': 'application/json' }, cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : { posts: [] }; })
       .then(function (data) {
         hide(loadingEl);
@@ -466,7 +466,7 @@
     if (!wrap) return;
     var base = assetsBase();
     var arrow = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
-    fetch(base + 'assets/data/products.json', { headers: { 'Accept': 'application/json' } })
+    fetch(base + 'assets/data/products.json', { headers: { 'Accept': 'application/json' }, cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : { products: [] }; })
       .then(function (data) {
         var list = ((data && data.products) || []).filter(function (p) { return p && p.published !== false; });
@@ -493,7 +493,7 @@
     var imgIcon = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.5-4.5L7 21"/></svg>';
     var meta = function (p) { var m = [p.client, p.year].filter(Boolean).join(' · '); return m || 'Client · Year'; };
 
-    fetch(base + 'assets/data/projects.json', { headers: { 'Accept': 'application/json' } })
+    fetch(base + 'assets/data/projects.json', { headers: { 'Accept': 'application/json' }, cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : { projects: [] }; })
       .then(function (data) {
         var all = ((data && data.projects) || []).filter(function (p) { return p && p.published !== false; });
@@ -546,7 +546,7 @@
     if (!wraps.length) return;
     var base = assetsBase();
     var MARK = '<svg class="member__mark" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M4 21V10l8-5 8 5v11M9 21v-6h6v6M6 21v-8M18 21v-8"/></svg>';
-    fetch(base + 'assets/data/memberships.json', { headers: { 'Accept': 'application/json' } })
+    fetch(base + 'assets/data/memberships.json', { headers: { 'Accept': 'application/json' }, cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : { items: [] }; })
       .then(function (data) {
         var items = ((data && data.items) || []).filter(function (m) { return m && m.published !== false; });
