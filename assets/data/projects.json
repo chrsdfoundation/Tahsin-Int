@@ -1,6 +1,46 @@
 {
     "projects": [
         {
+            "slug": "supply-of-lift",
+            "title": "Supply of Lift",
+            "status": "completed",
+            "client": "uday tower commercial complex",
+            "year": "2022",
+            "description": "Supply Operation servicing and Maintenance of 5 Nos 26 Passenger capacity Lift of Schindler Brand at uday tower gulshan 1 Dhaka.",
+            "image": "assets/uploads/lifts-for-high-rise-buildings-in-kenya-starcraft-technologie-9307f2.jpg",
+            "published": true
+        },
+        {
+            "slug": "supply-installation-of-power-generator",
+            "title": "Supply & installation of Power Generator",
+            "status": "completed",
+            "client": "partex star group",
+            "year": "2024",
+            "description": "We import all types of Power Generators, Transformers, H.T Switch Gear & other Electrical Sub-station equipment.Working as a contractor for supply, installation, testing & commision of electrical sub station of any size & capacity.",
+            "image": "assets/uploads/wy-632b4e.jpg",
+            "published": true
+        },
+        {
+            "slug": "yearly-operational-maintenance-service",
+            "title": "yearly operational maintenance  Service",
+            "status": "ongoing",
+            "client": "Hyatt Place Dhaka Uttara",
+            "year": "2026",
+            "description": "Yearly Operation, Maintenance & Servicing of 2 x 150 Ton capacity Central Air Conditioning Syestem at Hyatt Place Dhaka.",
+            "image": "assets/uploads/chiller-e43455.jpg",
+            "published": true
+        },
+        {
+            "slug": "yearly-operational-service",
+            "title": "Yearly Operational Service",
+            "status": "completed",
+            "client": "CENTER POINT DHAKA",
+            "year": "2025",
+            "description": "Early Operation Maintenance And Servicing of 3 x 300 Ton capacity central Air conditioning syestem.",
+            "image": "assets/uploads/chiller-screw-compressor-repairing-services-500x500-1-c289ea.jpg",
+            "published": true
+        },
+        {
             "slug": "central-air-cooling-system",
             "title": "central air cooling system",
             "status": "completed",
@@ -11,13 +51,13 @@
             "published": true
         },
         {
-            "slug": "underground-cabling-project-in-bangladesh-football-stadium-dhaka",
-            "title": "Underground cabling project in Bangladesh football stadium Dhaka.",
+            "slug": "underground-cabling-project-in-bir-shrestha-shaheed-shipahi-mustofa-kamal-stadium-kamalapur",
+            "title": "Underground cabling project in Bir Shrestha Shaheed Shipahi Mustofa Kamal Stadium Kamalapur.",
             "status": "completed",
             "client": "Ministry of sports",
             "year": "2025",
-            "description": "600 metre underground heavy carvelling project done under Bangladesh National Football stadium Dhaka",
-            "image": "assets/uploads/1000364185-40ac79.jpg",
+            "description": "600 metre underground heavy carvelling project done under Bir Shrestha Shaheed Shipahi Mustofa Kamal Stadium Kamalapur",
+            "image": "assets/uploads/1000365110-46c222.jpg",
             "published": true
         },
         {
